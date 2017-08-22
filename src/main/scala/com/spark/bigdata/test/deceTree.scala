@@ -30,6 +30,7 @@ object deceTree {
     val testErr=testAndPre.filter(x=>x._1!=x._2).count().toDouble/testData.count().toDouble
     println(s"the error is ${testErr}")
 
+    spark.stop()
 
 
 
