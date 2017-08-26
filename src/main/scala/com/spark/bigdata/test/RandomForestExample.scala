@@ -1,17 +1,16 @@
 package com.spark.bigdata.test
 
-import org.apache.spark.SparkConf
 import org.apache.spark.mllib.tree.RandomForest
 import org.apache.spark.mllib.tree.model.RandomForestModel
 import org.apache.spark.mllib.util.MLUtils
 import org.apache.spark.sql.SparkSession
 
-object RandomForstExample {
+object RandomForestExample {
 
   def main(args: Array[String]): Unit = {
 
-    val spark=SparkSession.builder().appName("RandomForstExample").master("local[*]").getOrCreate()
-    val sc=spark.sparkContext
+    val spark = SparkSession.builder().appName("RandomForstExample").master("local[*]").getOrCreate()
+    val sc = spark.sparkContext
     // 加载数据
     val data = MLUtils.loadLibSVMFile(sc, "data/mllib/sample_libsvm_data.txt")
     // 将数据随机分配为两份，一份用于训练，一份用于测试
@@ -44,14 +43,11 @@ object RandomForstExample {
     val testErr = labelAndPreds.filter(r => r._1 != r._2).count.toDouble / testData.count()
     println("Test Error = " + testErr)
     println("Learned classification forest model:\n" + model.toDebugString)
-
     // 将训练后的随机森林模型持久化
     model.save(sc, "myModelPath")
     //加载随机森林模型到内存
     val sameModel = RandomForestModel.load(sc, "myModelPath")
-
     spark.stop()
-
   }
 
 }
